@@ -25,6 +25,13 @@ export const loadChannels = async (bot: ExtendedClient) => {
   if (helpChannel.type !== ChannelType.GuildForum) {
     throw new Error("Help channel is not a guild forum channel.");
   }
+  const questionTag = helpChannel.availableTags.find(
+    (t) => t.name === "Question"
+  );
+  if (!questionTag) {
+    throw new Error("Could not find `Question` tag.");
+  }
+
   const generalChannel =
     homeGuild.channels.cache.get(bot.env.generalChannel) ||
     (await homeGuild.channels.fetch(bot.env.generalChannel));
@@ -39,6 +46,7 @@ export const loadChannels = async (bot: ExtendedClient) => {
       homeGuild,
       helpChannel,
       generalChannel,
+      questionTag: questionTag.id,
     };
   }
 };

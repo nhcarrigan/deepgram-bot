@@ -15,6 +15,7 @@ export interface ExtendedClient extends Client {
     homeGuild: Guild;
     helpChannel: ForumChannel;
     generalChannel: GuildTextBasedChannel;
+    questionTag: string;
   };
   contexts: Context[];
 }
