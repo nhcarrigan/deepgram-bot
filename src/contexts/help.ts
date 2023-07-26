@@ -40,7 +40,7 @@ export const help: Context = {
         appliedTags: [bot.cache.questionTag],
       });
       const yesButton = new ButtonBuilder()
-        .setCustomId("yes")
+        .setCustomId(`yes-${interaction.user.id}`)
         .setLabel("This helps!")
         .setEmoji("✅")
         .setStyle(ButtonStyle.Success);

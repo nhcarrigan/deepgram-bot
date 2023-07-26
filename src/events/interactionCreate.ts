@@ -40,8 +40,26 @@ export const interactionCreate = async (
 
     if (interaction.isButton()) {
       await interaction.deferReply({ ephemeral: true });
-      if (interaction.customId === "yes") {
-        const { message } = interaction;
+      if (interaction.customId.startsWith("yes-")) {
+        const questionAuthorId = interaction.customId.split("-")[1];
+        const { member, message } = interaction;
+        if (!member) {
+          await interaction.editReply({
+            content: ResponseText.MemberError,
+          });
+          return;
+        }
+        if (
+          member.user.id !== questionAuthorId &&
+          !bot.env.helperRoles.some((r) =>
+            (member as GuildMember).roles.cache.has(r)
+          )
+        ) {
+          await interaction.editReply({
+            content: ResponseText.MustBeHelperOrAuthor,
+          });
+          return;
+        }
         await message.edit({ components: [] });
         const messageHistory = await message.channel.messages.fetch({
           before: message.id,

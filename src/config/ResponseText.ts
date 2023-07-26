@@ -6,6 +6,7 @@
 export enum ResponseText {
   MustBeHelper = "This command can only be used by our server helpers.",
   MustBeHelperButton = "Only server helpers can mark a message as inaccurate.",
+  MustBeHelperOrAuthor = "Only server helpers or the original question author may mark a message as helpful.",
   NoMessage = "There was an error loading the message. Please try again later.",
   HelpSuccess = "The question has been moved to the help forum.",
   NoAiUrl = "The AI has not been configured.",
