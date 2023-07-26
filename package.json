@@ -1,7 +1,7 @@
 {
-  "name": "nodejs-typescript-template",
+  "name": "deepgram-bot",
   "version": "0.0.0",
-  "description": "A template for my nodejs projects",
+  "description": "A Discord bot for the Deepgram server.",
   "main": "prod/index.js",
   "scripts": {
     "build": "tsc",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/naomi-lgbt/nodejs-typescript-template.git"
+    "url": "git+ssh://git@github.com/nhcarrigan/deepgram-bot.git"
   },
   "engines": {
     "node": "18.17.0",
@@ -27,9 +27,9 @@
   "author": "Naomi Carrigan",
   "license": "MPL-2.0",
   "bugs": {
-    "url": "https://github.com/naomi-lgbt/nodejs-typescript-template/issues"
+    "url": "https://github.com/nhcarrigan/deepgram-bot/issues"
   },
-  "homepage": "https://github.com/naomi-lgbt/nodejs-typescript-template#readme",
+  "homepage": "https://github.com/nhcarrigan/deepgram-bot#readme",
   "dependencies": {
     "dotenv": "16.3.1",
     "winston": "3.10.0"
