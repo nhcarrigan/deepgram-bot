@@ -1,3 +1,4 @@
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 import { Context } from "../interfaces/Context";
 
 export const help: Context = {
@@ -32,8 +33,23 @@ export const help: Context = {
       },
       appliedTags: ["question"],
     });
+    const yesButton = new ButtonBuilder()
+      .setCustomId("yes")
+      .setLabel("This helps!")
+      .setEmoji("✅")
+      .setStyle(ButtonStyle.Success);
+    const noButton = new ButtonBuilder()
+      .setCustomId("no")
+      .setLabel("This is incorrect.")
+      .setEmoji("❌")
+      .setStyle(ButtonStyle.Danger);
+    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+      yesButton,
+      noButton
+    );
     await thread.send({
       content: "This will eventually be an AI response.",
+      components: [row],
     });
     await interaction.editReply({
       content: "The question has been moved to the help forum.",
