@@ -39,24 +39,26 @@ export const help: Context = {
         },
         appliedTags: [bot.cache.questionTag],
       });
-      const yesButton = new ButtonBuilder()
-        .setCustomId(`yes-${interaction.user.id}`)
-        .setLabel("This helps!")
-        .setEmoji("✅")
-        .setStyle(ButtonStyle.Success);
-      const noButton = new ButtonBuilder()
-        .setCustomId("no")
-        .setLabel("This is incorrect.")
-        .setEmoji("✖️")
-        .setStyle(ButtonStyle.Danger);
-      const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-        yesButton,
-        noButton
-      );
-      await thread.send({
-        content: response,
-        components: [row],
-      });
+      if (response !== ResponseText.NoAiUrl) {
+        const yesButton = new ButtonBuilder()
+          .setCustomId(`yes-${interaction.user.id}`)
+          .setLabel("This helps!")
+          .setEmoji("✅")
+          .setStyle(ButtonStyle.Success);
+        const noButton = new ButtonBuilder()
+          .setCustomId("no")
+          .setLabel("This is incorrect.")
+          .setEmoji("✖️")
+          .setStyle(ButtonStyle.Danger);
+        const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+          yesButton,
+          noButton
+        );
+        await thread.send({
+          content: response,
+          components: [row],
+        });
+      }
       await interaction.editReply({
         content: ResponseText.HelpSuccess,
       });
