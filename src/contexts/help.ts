@@ -42,7 +42,7 @@ export const help: Context = {
     const noButton = new ButtonBuilder()
       .setCustomId("no")
       .setLabel("This is incorrect.")
-      .setEmoji("❌")
+      .setEmoji("✖️")
       .setStyle(ButtonStyle.Danger);
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
       yesButton,
