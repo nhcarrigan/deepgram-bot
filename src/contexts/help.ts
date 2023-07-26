@@ -6,6 +6,6 @@ export const help: Context = {
     type: 3,
   },
   run: async (bot, interaction) => {
-    await interaction.reply("Coming soon!");
+    await interaction.editReply("Coming soon!");
   },
 };
