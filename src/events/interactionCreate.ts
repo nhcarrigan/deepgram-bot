@@ -1,4 +1,4 @@
-import { Interaction } from "discord.js";
+import { GuildMember, Interaction } from "discord.js";
 
 import { ExtendedClient } from "../interfaces/ExtendedClient";
 import { isGuildContextCommand } from "../utils/typeGuards";
@@ -31,5 +31,44 @@ export const interactionCreate = async (
       return;
     }
     await target.run(bot, interaction);
+  }
+
+  if (interaction.isButton()) {
+    await interaction.deferReply({ ephemeral: true });
+    if (interaction.customId === "yes") {
+      const { message } = interaction;
+      await message.edit({ components: [] });
+      await interaction.editReply({
+        content:
+          "Thanks for confirming! Your feedback helps us improve our AI responses.",
+      });
+    }
+
+    if (interaction.customId === "no") {
+      const { member: member, message } = interaction;
+      if (!member) {
+        await interaction.editReply({
+          content:
+            "There was an error loading your user record. Please try again later.",
+        });
+        return;
+      }
+      if (
+        !bot.env.helperRoles.some((r) =>
+          (member as GuildMember).roles.cache.has(r)
+        )
+      ) {
+        await interaction.editReply({
+          content: "Only server helpers can mark a message as inaccurate.",
+        });
+        return;
+      }
+
+      await message.edit({ components: [] });
+      await interaction.editReply({
+        content:
+          "Thanks for marking this response as inaccurate. Your feedback helps us improve our AI responses.",
+      });
+    }
   }
 };
