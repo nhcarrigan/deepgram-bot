@@ -1,6 +1,6 @@
 import { ChannelType } from "discord.js";
 
-import { ExtendedClient } from "../../src/interfaces/ExtendedClient";
+import { ExtendedClient } from "../interfaces/ExtendedClient";
 
 /**
  * Loads the guild and channel IDs from the environment, fetches
