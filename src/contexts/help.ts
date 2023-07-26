@@ -1,4 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
+
 import { Context } from "../interfaces/Context";
 
 export const help: Context = {
@@ -31,7 +32,7 @@ export const help: Context = {
       message: {
         content: `Hey <@!${author.id}>, your question has been moved here!\n\n${content}`,
       },
-      appliedTags: ["question"],
+      appliedTags: [bot.cache.questionTag],
     });
     const yesButton = new ButtonBuilder()
       .setCustomId("yes")
