@@ -1,5 +1,7 @@
 import { Client, ForumChannel, Guild, GuildTextBasedChannel } from "discord.js";
 
+import { Context } from "./Context";
+
 export interface ExtendedClient extends Client {
   env: {
     token: string;
@@ -14,4 +16,5 @@ export interface ExtendedClient extends Client {
     helpChannel: ForumChannel;
     generalChannel: GuildTextBasedChannel;
   };
+  contexts: Context[];
 }
