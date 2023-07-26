@@ -23,6 +23,7 @@ export interface ExtendedClient extends Client {
     helpChannel: ForumChannel;
     generalChannel: GuildTextBasedChannel;
     questionTag: string;
+    lastSticky: string;
   };
   contexts: Context[];
 }

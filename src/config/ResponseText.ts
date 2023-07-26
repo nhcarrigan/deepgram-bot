@@ -18,3 +18,8 @@ export enum ResponseText {
   NoCommand = "This command is not available.",
   NoGuild = "This command can only be used in a server.",
 }
+
+/**
+ * This is separate so that the environment value can be interpolated.
+ */
+export const StickyMessage = `A friendly reminder to everyone that questions should be asked in <#${process.env.HELP_CHANNEL_ID}>`;

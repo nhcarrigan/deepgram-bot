@@ -9,6 +9,7 @@ import { loadContexts } from "./utils/loadContexts";
 import { logHandler } from "./utils/logHandler";
 import { registerCommands } from "./utils/registerCommands";
 import { validateEnv } from "./utils/validateEnv";
+import { sendStickyMessage } from "./modules/sendStickyMessage";
 
 (async () => {
   try {
@@ -24,6 +25,10 @@ import { validateEnv } from "./utils/validateEnv";
       await loadChannels(bot);
       await registerCommands(bot);
       logHandler.log("info", "Bot is ready.");
+      setInterval(
+        async () => await sendStickyMessage(bot),
+        bot.env.stickyFrequency * 1000 * 60
+      );
     });
 
     await bot.login(bot.env.token);

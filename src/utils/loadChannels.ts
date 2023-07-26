@@ -50,6 +50,7 @@ export const loadChannels = async (bot: ExtendedClient) => {
         helpChannel,
         generalChannel,
         questionTag: questionTag.id,
+        lastSticky: "",
       };
     }
   } catch (err) {
