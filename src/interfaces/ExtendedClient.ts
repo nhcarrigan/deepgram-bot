@@ -1,4 +1,10 @@
-import { Client, ForumChannel, Guild, GuildTextBasedChannel } from "discord.js";
+import {
+  Client,
+  ForumChannel,
+  Guild,
+  GuildTextBasedChannel,
+  WebhookClient,
+} from "discord.js";
 
 import { Context } from "./Context";
 
@@ -10,6 +16,7 @@ export interface ExtendedClient extends Client {
     helpChannel: string;
     generalChannel: string;
     stickyFrequency: number;
+    debugHook: WebhookClient;
   };
   cache: {
     homeGuild: Guild;

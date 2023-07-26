@@ -1,4 +1,5 @@
 import { assert } from "chai";
+import { WebhookClient } from "discord.js";
 import { after } from "mocha";
 
 import { validateEnv } from "../../src/utils/validateEnv";
@@ -47,19 +48,32 @@ suite("validateEnv utility", () => {
     );
   });
 
-  test("returns the environment cache when all variables are present", () => {
+  test("throws an error when missing DEBUG_HOOK", () => {
     process.env.STICKY_MESSAGE_FREQUENCY = "10";
-    assert.deepEqual(validateEnv(), {
-      token: "discord bot token",
-      homeGuild: "123",
-      helperRoles: ["123", "456", "789"],
-      helpChannel: "123",
-      generalChannel: "123",
-      stickyFrequency: 10,
-    });
+    assert.throws(validateEnv, "Missing DEBUG_HOOK environment variable");
+  });
+
+  test("returns the environment cache when all variables are present", () => {
+    process.env.DEBUG_HOOK =
+      // This is not a live webhook URL, so don't bother trying to use it.
+      "https://canary.discord.com/api/webhooks/1133857667505463326/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+    const result = validateEnv();
+    assert.equal(result.token, "discord bot token");
+    assert.equal(result.homeGuild, "123");
+    assert.deepEqual(result.helperRoles, ["123", "456", "789"]);
+    assert.equal(result.helpChannel, "123");
+    assert.equal(result.generalChannel, "123");
+    assert.equal(result.stickyFrequency, 10);
+    assert.instanceOf(result.debugHook, WebhookClient);
   });
 
   after(() => {
     delete process.env.TOKEN;
+    delete process.env.HOME_GUILD_ID;
+    delete process.env.HELPER_ROLE_IDS;
+    delete process.env.HELP_CHANNEL_ID;
+    delete process.env.GENERAL_CHANNEL_ID;
+    delete process.env.STICKY_MESSAGE_FREQUENCY;
+    delete process.env.DEBUG_HOOK;
   });
 });

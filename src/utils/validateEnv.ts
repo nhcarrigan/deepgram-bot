@@ -1,3 +1,5 @@
+import { WebhookClient } from "discord.js";
+
 import { ExtendedClient } from "../interfaces/ExtendedClient";
 
 /**
@@ -32,6 +34,9 @@ export const validateEnv = (): ExtendedClient["env"] => {
   if (!stickyFrequency) {
     throw new Error("Could not parse sticky message frequency into number");
   }
+  if (!process.env.DEBUG_HOOK) {
+    throw new Error("Missing DEBUG_HOOK environment variable");
+  }
   return {
     token: process.env.TOKEN,
     homeGuild: process.env.HOME_GUILD_ID,
@@ -39,5 +44,8 @@ export const validateEnv = (): ExtendedClient["env"] => {
     helpChannel: process.env.HELP_CHANNEL_ID,
     generalChannel: process.env.GENERAL_CHANNEL_ID,
     stickyFrequency,
+    debugHook: new WebhookClient({
+      url: process.env.DEBUG_HOOK,
+    }),
   };
 };

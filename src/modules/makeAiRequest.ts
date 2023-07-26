@@ -2,6 +2,7 @@
 
 import { AiEndpoint } from "../interfaces/AiEndpoint";
 import { ExtendedClient } from "../interfaces/ExtendedClient";
+import { errorHandler } from "../utils/errorHandler";
 
 /**
  * Sends a request to the AI server, then returns the appropriate response.
@@ -18,33 +19,38 @@ export const makeAiRequest = async (
   question: string,
   response?: string
 ): Promise<string> => {
-  const url = process.env.AI_URL;
-  if (!url) {
-    return "The AI has not been configured.";
+  try {
+    const url = process.env.AI_URL;
+    if (!url) {
+      return "The AI has not been configured.";
+    }
+    if (endpoint === "response") {
+      // const req = await fetch(url + endpoint, {
+      //   method: "POST",
+      //   headers: {
+      //     "content-type": "application/json",
+      //   },
+      //   body: JSON.stringify({ question }),
+      // });
+      // const res = await req.json();
+      // return res.response;
+      return "This is where the AI would generate a response.";
+    }
+    if (!response) {
+      return "You must provide a response to confirm or deny.";
+    }
+    //   await fetch(url + endpoint, {
+    //     method: "POST",
+    //     headers: {
+    //       "content-type": "application/json",
+    //     },
+    //     body: JSON.stringify({ question, response }),
+    //   });
+    return endpoint === "confirm"
+      ? "Thanks for confirming! Your feedback helps us improve our AI responses."
+      : "Thanks for marking this response as inaccurate. Your feedback helps us improve our AI responses.";
+  } catch (err) {
+    await errorHandler(bot, "make ai request module", err);
+    return "err";
   }
-  if (endpoint === "response") {
-    // const req = await fetch(url + endpoint, {
-    //   method: "POST",
-    //   headers: {
-    //     "content-type": "application/json",
-    //   },
-    //   body: JSON.stringify({ question }),
-    // });
-    // const res = await req.json();
-    // return res.response;
-    return "This is where the AI would generate a response.";
-  }
-  if (!response) {
-    return "You must provide a response to confirm or deny.";
-  }
-  //   await fetch(url + endpoint, {
-  //     method: "POST",
-  //     headers: {
-  //       "content-type": "application/json",
-  //     },
-  //     body: JSON.stringify({ question, response }),
-  //   });
-  return endpoint === "confirm"
-    ? "Thanks for confirming! Your feedback helps us improve our AI responses."
-    : "Thanks for marking this response as inaccurate. Your feedback helps us improve our AI responses.";
 };
