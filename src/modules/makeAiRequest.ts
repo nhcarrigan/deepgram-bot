@@ -1,5 +1,6 @@
 // import fetch from "node-fetch";
 
+import { ResponseText } from "../config/ResponseText";
 import { AiEndpoint } from "../interfaces/AiEndpoint";
 import { ExtendedClient } from "../interfaces/ExtendedClient";
 import { errorHandler } from "../utils/errorHandler";
@@ -22,7 +23,7 @@ export const makeAiRequest = async (
   try {
     const url = process.env.AI_URL;
     if (!url) {
-      return "The AI has not been configured.";
+      return ResponseText.NoAiUrl;
     }
     if (endpoint === "response") {
       // const req = await fetch(url + endpoint, {
@@ -37,7 +38,7 @@ export const makeAiRequest = async (
       return "This is where the AI would generate a response.";
     }
     if (!response) {
-      return "You must provide a response to confirm or deny.";
+      return ResponseText.NoAiResponseArg;
     }
     //   await fetch(url + endpoint, {
     //     method: "POST",
@@ -47,8 +48,8 @@ export const makeAiRequest = async (
     //     body: JSON.stringify({ question, response }),
     //   });
     return endpoint === "confirm"
-      ? "Thanks for confirming! Your feedback helps us improve our AI responses."
-      : "Thanks for marking this response as inaccurate. Your feedback helps us improve our AI responses.";
+      ? ResponseText.ConfirmButton
+      : ResponseText.InaccurateButton;
   } catch (err) {
     await errorHandler(bot, "make ai request module", err);
     return "err";

@@ -1,5 +1,6 @@
 import { GuildMember, Interaction } from "discord.js";
 
+import { ResponseText } from "../config/ResponseText";
 import { ExtendedClient } from "../interfaces/ExtendedClient";
 import { makeAiRequest } from "../modules/makeAiRequest";
 import { parseQuestionContent } from "../modules/parseQuestionContent";
@@ -21,7 +22,7 @@ export const interactionCreate = async (
       await interaction.deferReply({ ephemeral: true });
       if (!isGuildContextCommand(interaction)) {
         await interaction.editReply({
-          content: "This command can only be used in a server.",
+          content: ResponseText.NoGuild,
         });
         return;
       }
@@ -30,7 +31,7 @@ export const interactionCreate = async (
       );
       if (!target) {
         await interaction.editReply({
-          content: "This command is not available.",
+          content: ResponseText.NoCommand,
         });
         return;
       }
@@ -62,8 +63,7 @@ export const interactionCreate = async (
         const { member: member, message } = interaction;
         if (!member) {
           await interaction.editReply({
-            content:
-              "There was an error loading your user record. Please try again later.",
+            content: ResponseText.MemberError,
           });
           return;
         }
@@ -73,7 +73,7 @@ export const interactionCreate = async (
           )
         ) {
           await interaction.editReply({
-            content: "Only server helpers can mark a message as inaccurate.",
+            content: ResponseText.MustBeHelperButton,
           });
           return;
         }
@@ -96,5 +96,10 @@ export const interactionCreate = async (
     }
   } catch (err) {
     await errorHandler(bot, "interaction create event", err);
+    if ("editReply" in interaction) {
+      await interaction.editReply({
+        content: ResponseText.InteractionError,
+      });
+    }
   }
 };

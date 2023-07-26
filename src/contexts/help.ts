@@ -1,5 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
+import { ResponseText } from "../config/ResponseText";
 import { Context } from "../interfaces/Context";
 import { makeAiRequest } from "../modules/makeAiRequest";
 import { errorHandler } from "../utils/errorHandler";
@@ -15,7 +16,7 @@ export const help: Context = {
 
       if (!bot.env.helperRoles.some((r) => member.roles.cache.has(r))) {
         await interaction.editReply({
-          content: "This command can only be used by our server helpers.",
+          content: ResponseText.MustBeHelper,
         });
         return;
       }
@@ -23,7 +24,7 @@ export const help: Context = {
       const message = interaction.options.getMessage("message");
       if (!message) {
         await interaction.editReply({
-          content: "Error loading message.",
+          content: ResponseText.NoMessage,
         });
         return;
       }
@@ -57,12 +58,12 @@ export const help: Context = {
         components: [row],
       });
       await interaction.editReply({
-        content: "The question has been moved to the help forum.",
+        content: ResponseText.HelpSuccess,
       });
     } catch (err) {
       await errorHandler(bot, "help context", err);
       await interaction.editReply({
-        content: "There was an error processing your request.",
+        content: ResponseText.InteractionError,
       });
     }
   },
