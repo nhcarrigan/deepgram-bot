@@ -1,3 +1,16 @@
 {
-  "extends": "@nhcarrigan"
+  "extends": "@nhcarrigan",
+  "overrides": [
+    /**
+     * This override can be removed once the AI fetch calls are implemented.
+     * Uncommenting the example scaffolding will enable an await keyword and
+     * the linter will be pleased.
+     */
+    {
+      "files": "src/modules/makeAiRequest.ts",
+      "rules": {
+        "require-await": "off"
+      }
+    }
+  ]
 }

@@ -1,6 +1,7 @@
 import { GuildMember, Interaction } from "discord.js";
 
 import { ExtendedClient } from "../interfaces/ExtendedClient";
+import { makeAiRequest } from "../modules/makeAiRequest";
 import { isGuildContextCommand } from "../utils/typeGuards";
 
 /**
@@ -38,9 +39,19 @@ export const interactionCreate = async (
     if (interaction.customId === "yes") {
       const { message } = interaction;
       await message.edit({ components: [] });
+      const messageHistory = await message.channel.messages.fetch({
+        before: message.id,
+        limit: 50,
+      });
+      const question = messageHistory.last();
+      const response = await makeAiRequest(
+        bot,
+        "confirm",
+        question?.content || "",
+        message.content
+      );
       await interaction.editReply({
-        content:
-          "Thanks for confirming! Your feedback helps us improve our AI responses.",
+        content: response,
       });
     }
 
@@ -63,11 +74,20 @@ export const interactionCreate = async (
         });
         return;
       }
-
       await message.edit({ components: [] });
+      const messageHistory = await message.channel.messages.fetch({
+        before: message.id,
+        limit: 50,
+      });
+      const question = messageHistory.last();
+      const response = await makeAiRequest(
+        bot,
+        "deny",
+        question?.content || "",
+        message.content
+      );
       await interaction.editReply({
-        content:
-          "Thanks for marking this response as inaccurate. Your feedback helps us improve our AI responses.",
+        content: response,
       });
     }
   }

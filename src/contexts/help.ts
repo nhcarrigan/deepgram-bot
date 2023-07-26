@@ -1,6 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
 import { Context } from "../interfaces/Context";
+import { makeAiRequest } from "../modules/makeAiRequest";
 
 export const help: Context = {
   data: {
@@ -26,6 +27,7 @@ export const help: Context = {
     }
     const { content, author } = message;
     await message.delete();
+    const response = await makeAiRequest(bot, "response", content);
     const thread = await bot.cache.helpChannel.threads.create({
       name: `Help Requested by ${author.username}`,
       autoArchiveDuration: 1440,
@@ -49,7 +51,7 @@ export const help: Context = {
       noButton
     );
     await thread.send({
-      content: "This will eventually be an AI response.",
+      content: response,
       components: [row],
     });
     await interaction.editReply({
