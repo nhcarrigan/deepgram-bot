@@ -3,13 +3,13 @@ import { Client, Events } from "discord.js";
 import { IntentOptions } from "./config/IntentOptions";
 import { interactionCreate } from "./events/interactionCreate";
 import { ExtendedClient } from "./interfaces/ExtendedClient";
+import { sendStickyMessage } from "./modules/sendStickyMessage";
 import { errorHandler } from "./utils/errorHandler";
 import { loadChannels } from "./utils/loadChannels";
 import { loadContexts } from "./utils/loadContexts";
 import { logHandler } from "./utils/logHandler";
 import { registerCommands } from "./utils/registerCommands";
 import { validateEnv } from "./utils/validateEnv";
-import { sendStickyMessage } from "./modules/sendStickyMessage";
 
 (async () => {
   try {
