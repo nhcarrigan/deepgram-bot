@@ -2,6 +2,7 @@ import { GuildMember, Interaction } from "discord.js";
 
 import { ExtendedClient } from "../interfaces/ExtendedClient";
 import { makeAiRequest } from "../modules/makeAiRequest";
+import { parseQuestionContent } from "../modules/parseQuestionContent";
 import { isGuildContextCommand } from "../utils/typeGuards";
 
 /**
@@ -47,7 +48,7 @@ export const interactionCreate = async (
       const response = await makeAiRequest(
         bot,
         "confirm",
-        question?.content || "",
+        parseQuestionContent(question?.content),
         message.content
       );
       await interaction.editReply({
@@ -83,7 +84,7 @@ export const interactionCreate = async (
       const response = await makeAiRequest(
         bot,
         "deny",
-        question?.content || "",
+        parseQuestionContent(question?.content),
         message.content
       );
       await interaction.editReply({
