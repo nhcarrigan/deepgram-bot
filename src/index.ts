@@ -1,17 +1,17 @@
+import { Client, Events } from "discord.js";
+
+import { IntentOptions } from "./config/IntentOptions";
+import { ExtendedClient } from "./interfaces/ExtendedClient";
 import { logHandler } from "./utils/logHandler";
+import { validateEnv } from "./utils/validateEnv";
 
-/**
- * The linter will expect JSDoc declarations for all exported functions.
- *
- * @param {string} name Variables should be typed, and full sentences are expected.
- * @returns {string} The return type should be specified.
- */
-const main = (name: string): string => {
-  const string = `Hello ${name}!`;
-  logHandler.log("info", string);
-  return string;
-};
+(async () => {
+  const bot = new Client({ intents: IntentOptions }) as ExtendedClient;
+  bot.env = validateEnv();
 
-main("Naomi");
+  bot.on(Events.ClientReady, () => {
+    logHandler.log("info", "Bot is ready.");
+  });
 
-export default main;
+  await bot.login(bot.env.token);
+})();
