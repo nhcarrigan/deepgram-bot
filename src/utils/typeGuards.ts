@@ -10,4 +10,4 @@ import { GuildContextCommand } from "../interfaces/GuildContextCommand";
  */
 export const isGuildContextCommand = (
   context: ContextMenuCommandInteraction
-): context is GuildContextCommand => !!context.guild;
+): context is GuildContextCommand => !!context.guild && !!context.member;
