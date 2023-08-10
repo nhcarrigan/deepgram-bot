@@ -17,9 +17,13 @@ suite("loadContexts util", () => {
     );
     assert.equal(result.contexts.length, fileList.length);
     for (const file of fileList) {
+      const imported = await import(
+        join(process.cwd(), "prod", "contexts", file)
+      );
       const name = file.split(".")[0];
+      const context = imported[name] as Context;
       assert.exists(
-        result.contexts.find((context) => context.data.name === name),
+        result.contexts.find((c) => c.data.name === context.data.name),
         `${name} command was not loaded.`
       );
     }
