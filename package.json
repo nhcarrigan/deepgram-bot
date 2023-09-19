@@ -14,7 +14,7 @@
     "url": "git+ssh://git@github.com/nhcarrigan/deepgram-bot.git"
   },
   "engines": {
-    "node": "18",
+    "node": "20",
     "pnpm": "8"
   },
   "keywords": [
