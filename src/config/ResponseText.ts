@@ -23,6 +23,8 @@ export enum ResponseText {
   AlreadyAnswered = "This thread has already been marked as answered.",
   AnswerFailed = "This question has been flagged as answered on Discord, but could not be migrated to the discussion channel. Please migrate manually.",
   AnswerSuccess = "This question has been flagged as answered!",
+  MovedThread = "Please make sure to respond in this thread with as much detail about your question as possible. This will help us better provide you support.",
+  CreatedThread = "Thanks for asking your question. Please be sure to reply with as much detail as possible so we can assist you efficiently.",
 }
 
 /**
