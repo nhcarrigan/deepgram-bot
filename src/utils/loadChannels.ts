@@ -31,8 +31,14 @@ export const loadChannels = async (bot: ExtendedClient) => {
     const questionTag = helpChannel.availableTags.find(
       (t) => t.name === "Question"
     );
+    const answerTag = helpChannel.availableTags.find(
+      (t) => t.name === "Answered"
+    );
     if (!questionTag) {
       throw new Error("Could not find `Question` tag.");
+    }
+    if (!answerTag) {
+      throw new Error("Could not find `Answer` tag.");
     }
 
     const generalChannel =
@@ -50,6 +56,7 @@ export const loadChannels = async (bot: ExtendedClient) => {
         helpChannel,
         generalChannel,
         questionTag: questionTag.id,
+        answerTag: answerTag.id,
         lastSticky: "",
       };
     }

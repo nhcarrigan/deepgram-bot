@@ -17,6 +17,12 @@ export enum ResponseText {
   MemberError = "There was an error loading your user record. Please try again later.",
   NoCommand = "This command is not available.",
   NoGuild = "This command can only be used in a server.",
+  NoChannel = "Could not load the channel data. Please try again.",
+  NoOP = "Could not load original thread post. Please try again.",
+  MustBeHelpChannel = "Messages can only be marked as an answer in the help forum channel.",
+  AlreadyAnswered = "This thread has already been marked as answered.",
+  AnswerFailed = "This question has been flagged as answered on Discord, but could not be migrated to the discussion channel. Please migrate manually.",
+  AnswerSuccess = "This question has been flagged as answered!",
 }
 
 /**
