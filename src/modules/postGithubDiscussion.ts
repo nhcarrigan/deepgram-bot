@@ -3,28 +3,20 @@ import { graphql } from "@octokit/graphql";
 import { ExtendedClient } from "../interfaces/ExtendedClient";
 import { errorHandler } from "../utils/errorHandler";
 
-interface Post {
-  content: string;
-  author: string;
-}
-
-const formatPost = (post: Post) =>
-  `${post.content}\n\n> Posted by ${post.author}`;
-
 /**
  * Posts an answered thread to a GitHub discussion.
  *
  * @param {ExtendedClient} bot The bot's Discord instance.
  * @param {string} title The thread title.
- * @param {Post} question The original question.
- * @param {Post} answer The flagged answer.
+ * @param {string} question The original question.
+ * @param {string} answer The flagged answer.
  * @returns {boolean} True if the post is created.
  */
 export const postGithubDiscussion = async (
   bot: ExtendedClient,
   title: string,
-  question: Post,
-  answer: Post
+  question: string,
+  answer: string
 ): Promise<boolean> => {
   try {
     const {
@@ -93,7 +85,7 @@ export const postGithubDiscussion = async (
             { 
             repositoryId: "${repoQuery.repository.id}", 
             categoryId: "${category.id}", 
-            body: "${formatPost(question)}", 
+            body: "${question}", 
             title: "${title}"}
         ) { 
             discussion { id } 
@@ -107,7 +99,7 @@ export const postGithubDiscussion = async (
         mutation {
             addDiscussionComment(input: {
                 discussionId: "${discussionId}",
-                body: "${formatPost(answer)}"
+                body: "${answer}"
             }) {
                 comment {
                 id
