@@ -7,7 +7,7 @@ import { errorHandler } from "../utils/errorHandler";
 
 export const help: Context = {
   data: {
-    name: "help",
+    name: "Move to help channel",
     type: 3,
   },
   run: async (bot, interaction) => {

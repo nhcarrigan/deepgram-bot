@@ -11,6 +11,7 @@ import { loadContexts } from "./utils/loadContexts";
 import { logHandler } from "./utils/logHandler";
 import { registerCommands } from "./utils/registerCommands";
 import { validateEnv } from "./utils/validateEnv";
+import { healthCheck } from "./utils/healthCheck";
 
 (async () => {
   try {
@@ -26,6 +27,12 @@ import { validateEnv } from "./utils/validateEnv";
       await loadChannels(bot);
       await registerCommands(bot);
       logHandler.log("info", "Bot is ready.");
+
+      setInterval(
+        async () => await healthCheck(bot, "Bot healthy."),
+        1440 * 1000 * 60
+      );
+
       setInterval(
         async () => await sendStickyMessage(bot),
         bot.env.stickyFrequency * 1000 * 60
