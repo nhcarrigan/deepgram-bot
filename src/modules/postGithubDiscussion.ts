@@ -28,6 +28,7 @@ export const postGithubDiscussion = async (
 ): Promise<boolean> => {
   try {
     const {
+      GITHUB_LABEL_ID: label,
       GITHUB_TOKEN: token,
       GITHUB_OWNER: owner,
       GITHUB_REPO: repo,
@@ -65,7 +66,7 @@ export const postGithubDiscussion = async (
       `);
 
     const categoryId = repoQuery.repository.discussionCategories.nodes.find(
-      (n) => n.name === "Q&A"
+      (n) => n.name === "General help"
     );
 
     if (!categoryId) {
@@ -91,6 +92,15 @@ export const postGithubDiscussion = async (
         }`);
 
     const discussionId = discussionQuery.createDiscussion.discussion.id;
+
+    await github(`
+      mutation {
+          addLabelsToLabelable(input:{
+            labelableId: "${discussionId}",
+            labelIds: ["${label}"]
+          })
+      }
+    `);
 
     const commentQuery: { addDiscussionComment: { comment: { id: string } } } =
       await github(`
