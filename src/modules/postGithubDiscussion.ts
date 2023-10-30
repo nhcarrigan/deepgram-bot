@@ -49,26 +49,36 @@ export const postGithubDiscussion = async (
       repository: {
         id: string;
         discussionCategories: { nodes: { id: string; name: string }[] };
+        labels: { nodes: { id: string; name: string }[] };
       };
     } = await github(`
         {
             repository(owner: "${owner}", name: "${repo}") {
-            id
+                id
                 discussionCategories(first: 10) {
-                nodes {
+                  nodes {
                     id
                     name
+                  }
                 }
+                labels(first: 50) {
+                  nodes {
+                    id
+                    name
+                  }
                 }
             }
         }
       `);
 
-    const categoryId = repoQuery.repository.discussionCategories.nodes.find(
+    const category = repoQuery.repository.discussionCategories.nodes.find(
       (n) => n.name === "Q&A"
     );
+    const label = repoQuery.repository.labels.nodes.find(
+      (label) => label.name.toLowerCase() === "discord"
+    );
 
-    if (!categoryId) {
+    if (!category) {
       await bot.env.debugHook.send({
         content: "Could not find the expected discussion category.",
       });
@@ -76,13 +86,13 @@ export const postGithubDiscussion = async (
     }
 
     const discussionQuery: {
-      createDiscussion: { discussion: { id: string } };
+      createDiscussion: { discussion: { id: string; number: number } };
     } = await github(`
         mutation {
         createDiscussion(input: 
             { 
             repositoryId: "${repoQuery.repository.id}", 
-            categoryId: "${categoryId.id}", 
+            categoryId: "${category.id}", 
             body: "${formatPost(question)}", 
             title: "${title}"}
         ) { 
@@ -121,6 +131,19 @@ export const postGithubDiscussion = async (
           }
         }
       `);
+
+    if (label) {
+      await github(`
+      mutation {
+        addLabelsToLabelable(input:{
+          labelableId: "${discussionId}",
+          labelIds: ["${label.id}"]
+        }) {
+          clientMutationId
+        }
+      }
+      `);
+    }
     return answerQuery.markDiscussionCommentAsAnswer.discussion.isAnswered;
   } catch (err) {
     await errorHandler(bot, "post github discussion", err);
