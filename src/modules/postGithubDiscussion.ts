@@ -86,7 +86,7 @@ export const postGithubDiscussion = async (
     }
 
     const discussionQuery: {
-      createDiscussion: { discussion: { id: string; number: number } };
+      createDiscussion: { discussion: { id: string } };
     } = await github(`
         mutation {
         createDiscussion(input: 
