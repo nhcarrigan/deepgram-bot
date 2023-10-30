@@ -2,6 +2,7 @@ import { Client, Events } from "discord.js";
 
 import { IntentOptions } from "./config/IntentOptions";
 import { interactionCreate } from "./events/interactionCreate";
+import { threadCreate } from "./events/threadCreate";
 import { ExtendedClient } from "./interfaces/ExtendedClient";
 import { sendStickyMessage } from "./modules/sendStickyMessage";
 import { errorHandler } from "./utils/errorHandler";
@@ -29,6 +30,10 @@ import { validateEnv } from "./utils/validateEnv";
         async () => await sendStickyMessage(bot),
         bot.env.stickyFrequency * 1000 * 60
       );
+    });
+
+    bot.on(Events.ThreadCreate, async (thread) => {
+      await threadCreate(bot, thread);
     });
 
     await bot.login(bot.env.token);
