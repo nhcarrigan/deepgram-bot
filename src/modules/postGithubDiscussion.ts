@@ -94,16 +94,16 @@ export const postGithubDiscussion = async (
 
     const discussionId = discussionQuery.createDiscussion.discussion.id;
 
-    await github(`
-      mutation {
-        addLabelsToLabelable(input:{
-          labelableId: "${discussionId}",
-          labelIds: ["${label}"]
-        }) {
-          clientMutationId
-        }
-      }
-    `);
+    // await github(`
+    //   mutation {
+    //     addLabelsToLabelable(input:{
+    //       labelableId: "${discussionId}",
+    //       labelIds: ["${label}"]
+    //     }) {
+    //       clientMutationId
+    //     }
+    //   }
+    // `);
 
     const commentQuery: { addDiscussionComment: { comment: { id: string } } } =
       await github(`
