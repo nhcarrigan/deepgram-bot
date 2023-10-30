@@ -6,12 +6,12 @@ import { threadCreate } from "./events/threadCreate";
 import { ExtendedClient } from "./interfaces/ExtendedClient";
 import { sendStickyMessage } from "./modules/sendStickyMessage";
 import { errorHandler } from "./utils/errorHandler";
+import { healthCheck } from "./utils/healthCheck";
 import { loadChannels } from "./utils/loadChannels";
 import { loadContexts } from "./utils/loadContexts";
 import { logHandler } from "./utils/logHandler";
 import { registerCommands } from "./utils/registerCommands";
 import { validateEnv } from "./utils/validateEnv";
-import { healthCheck } from "./utils/healthCheck";
 
 (async () => {
   try {
