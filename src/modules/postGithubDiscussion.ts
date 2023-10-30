@@ -28,7 +28,7 @@ export const postGithubDiscussion = async (
 ): Promise<boolean> => {
   try {
     const {
-      GITHUB_LABEL_ID: label,
+      // GITHUB_LABEL_ID: label,
       GITHUB_TOKEN: token,
       GITHUB_OWNER: owner,
       GITHUB_REPO: repo,
