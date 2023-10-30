@@ -3,28 +3,20 @@ import { graphql } from "@octokit/graphql";
 import { ExtendedClient } from "../interfaces/ExtendedClient";
 import { errorHandler } from "../utils/errorHandler";
 
-interface Post {
-  content: string;
-  author: string;
-}
-
-const formatPost = (post: Post) =>
-  `${post.content}\n\n> Posted by ${post.author}`;
-
 /**
  * Posts an answered thread to a GitHub discussion.
  *
  * @param {ExtendedClient} bot The bot's Discord instance.
  * @param {string} title The thread title.
- * @param {Post} question The original question.
- * @param {Post} answer The flagged answer.
+ * @param {string} question The original question.
+ * @param {string} answer The flagged answer.
  * @returns {boolean} True if the post is created.
  */
 export const postGithubDiscussion = async (
   bot: ExtendedClient,
   title: string,
-  question: Post,
-  answer: Post
+  question: string,
+  answer: string
 ): Promise<boolean> => {
   try {
     const {
@@ -50,26 +42,38 @@ export const postGithubDiscussion = async (
       repository: {
         id: string;
         discussionCategories: { nodes: { id: string; name: string }[] };
+        labels: { nodes: { id: string; name: string }[] };
       };
     } = await github(`
-      {
-        repository(owner: "${owner}", name: "${repo}") {
-          id
-          discussionCategories(first: 10) {
-            nodes {
-              id
-              name
+        {
+            repository(owner: "${owner}", name: "${repo}") {
+                id
+                discussionCategories(first: 10) {
+                  nodes {
+                    id
+                    name
+                  }
+                }
+                labels(first: 50) {
+                  nodes {
+                    id
+                    name
+                  }
+                }
             }
           }
         }
       }
     `);
 
-    const categoryId = repoQuery.repository.discussionCategories.nodes.find(
+    const category = repoQuery.repository.discussionCategories.nodes.find(
       (n) => n.name === "General help"
     );
+    const label = repoQuery.repository.labels.nodes.find(
+      (label) => label.name.toLowerCase() === "discord"
+    );
 
-    if (!categoryId) {
+    if (!category) {
       await bot.env.debugHook.send({
         content: "Could not find the expected discussion category.",
       });
@@ -80,40 +84,30 @@ export const postGithubDiscussion = async (
       createDiscussion: { discussion: { id: string } };
     } = await github(`
         mutation {
-          createDiscussion(input: 
-              { 
-              repositoryId: "${repoQuery.repository.id}", 
-              categoryId: "${categoryId.id}", 
-              body: "${formatPost(question)}", 
-              title: "${title}"}
-          ) { 
-              discussion { id } 
+        createDiscussion(input: 
+            { 
+            repositoryId: "${repoQuery.repository.id}", 
+            categoryId: "${category.id}", 
+            body: "${question}", 
+            title: "${title}"}
+        ) { 
+            discussion { id } 
             }
           }
     `);
 
     const discussionId = discussionQuery.createDiscussion.discussion.id;
 
-    // await github(`
-    //   mutation {
-    //     addLabelsToLabelable(input:{
-    //       labelableId: "${discussionId}",
-    //       labelIds: ["${label}"]
-    //     }) {
-    //       clientMutationId
-    //     }
-    //   }
-    // `);
-
     const commentQuery: { addDiscussionComment: { comment: { id: string } } } =
       await github(`
         mutation {
-          addDiscussionComment(input: {
-              discussionId: "${discussionId}",
-              body: "${formatPost(answer)}"
-          }) {
-            comment {
-              id
+            addDiscussionComment(input: {
+                discussionId: "${discussionId}",
+                body: "${answer}"
+            }) {
+                comment {
+                id
+                }
             }
           }
         }
@@ -134,6 +128,19 @@ export const postGithubDiscussion = async (
           }
         }
       `);
+
+    if (label) {
+      await github(`
+      mutation {
+        addLabelsToLabelable(input:{
+          labelableId: "${discussionId}",
+          labelIds: ["${label.id}"]
+        }) {
+          clientMutationId
+        }
+      }
+      `);
+    }
     return answerQuery.markDiscussionCommentAsAnswer.discussion.isAnswered;
   } catch (err) {
     await errorHandler(bot, "post github discussion", err);

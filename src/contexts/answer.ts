@@ -1,5 +1,6 @@
 import { ResponseText } from "../config/ResponseText";
 import { Context } from "../interfaces/Context";
+import { formatDiscussionPost } from "../modules/formatDiscussionPost";
 import { postGithubDiscussion } from "../modules/postGithubDiscussion";
 import { errorHandler } from "../utils/errorHandler";
 
@@ -62,28 +63,17 @@ export const answer: Context = {
         });
         return;
       }
-      const originalPostContent =
+      const originalPostContent = formatDiscussionPost(
+        originalPost,
         originalPost.author.id === bot.user?.id
-          ? originalPost.content.split(
-              "your question has been moved here!\n\n"
-            )[1] ?? "Unknown Post"
-          : originalPost.content;
-      const originalPostAuthor =
-        originalPost.author.id === bot.user?.id
-          ? originalPost.mentions.users.first()?.username ?? "Unknown Author"
-          : originalPost.author.username;
+      );
+      const answerPostContent = formatDiscussionPost(message, false);
 
       const posted = await postGithubDiscussion(
         bot,
         channel.name,
-        {
-          content: originalPostContent,
-          author: originalPostAuthor,
-        },
-        {
-          content: message.content,
-          author: message.author.username,
-        }
+        originalPostContent,
+        answerPostContent
       );
 
       await interaction.editReply({
