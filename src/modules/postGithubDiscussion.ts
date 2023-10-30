@@ -52,18 +52,18 @@ export const postGithubDiscussion = async (
         discussionCategories: { nodes: { id: string; name: string }[] };
       };
     } = await github(`
-        {
-            repository(owner: "${owner}", name: "${repo}") {
-            id
-                discussionCategories(first: 10) {
-                nodes {
-                    id
-                    name
-                }
-                }
+      {
+        repository(owner: "${owner}", name: "${repo}") {
+          id
+          discussionCategories(first: 10) {
+            nodes {
+              id
+              name
             }
+          }
         }
-      `);
+      }
+    `);
 
     const categoryId = repoQuery.repository.discussionCategories.nodes.find(
       (n) => n.name === "General help"
@@ -80,41 +80,44 @@ export const postGithubDiscussion = async (
       createDiscussion: { discussion: { id: string } };
     } = await github(`
         mutation {
-        createDiscussion(input: 
-            { 
-            repositoryId: "${repoQuery.repository.id}", 
-            categoryId: "${categoryId.id}", 
-            body: "${formatPost(question)}", 
-            title: "${title}"}
-        ) { 
-            discussion { id } 
+          createDiscussion(input: 
+              { 
+              repositoryId: "${repoQuery.repository.id}", 
+              categoryId: "${categoryId.id}", 
+              body: "${formatPost(question)}", 
+              title: "${title}"}
+          ) { 
+              discussion { id } 
             }
-        }`);
+          }
+    `);
 
     const discussionId = discussionQuery.createDiscussion.discussion.id;
 
     await github(`
       mutation {
-          addLabelsToLabelable(input:{
-            labelableId: "${discussionId}",
-            labelIds: ["${label}"]
-          })
+        addLabelsToLabelable(input:{
+          labelableId: "${discussionId}",
+          labelIds: ["${label}"]
+        }) {
+          clientMutationId
+        }
       }
     `);
 
     const commentQuery: { addDiscussionComment: { comment: { id: string } } } =
       await github(`
         mutation {
-            addDiscussionComment(input: {
-                discussionId: "${discussionId}",
-                body: "${formatPost(answer)}"
-            }) {
-                comment {
-                id
-                }
+          addDiscussionComment(input: {
+              discussionId: "${discussionId}",
+              body: "${formatPost(answer)}"
+          }) {
+            comment {
+              id
             }
+          }
         }
-        `);
+      `);
 
     const commentId = commentQuery.addDiscussionComment.comment.id;
 
@@ -125,9 +128,9 @@ export const postGithubDiscussion = async (
           markDiscussionCommentAsAnswer(input: {
               id: "${commentId}"
           }) {
-              discussion {
-                  isAnswered
-              }
+            discussion {
+              isAnswered
+            }
           }
         }
       `);
