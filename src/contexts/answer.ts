@@ -64,10 +64,17 @@ export const answer: Context = {
       }
       const originalPostContent =
         originalPost.author.id === bot.user?.id
-          ? originalPost.content.split(
-              "your question has been moved here!\n\n"
-            )[1] ?? "Unknown Post"
-          : originalPost.content;
+          ? originalPost.cleanContent
+              /**
+               * The comment blocks are a trick to escape accidentally @-mentioning users.
+               * Github does not support escaping the @-mention yet.
+               *
+               * Refer to https://github.com/github/markup/issues/1168 for more info.
+               */
+              .replace(/@/g, "@<!-- -->")
+              .split("your question has been moved here!\n\n")[1] ??
+            "Unknown Post"
+          : originalPost.cleanContent.replace(/@/g, "@<!-- -->");
       const originalPostAuthor =
         originalPost.author.id === bot.user?.id
           ? originalPost.mentions.users.first()?.username ?? "Unknown Author"
@@ -81,7 +88,7 @@ export const answer: Context = {
           author: originalPostAuthor,
         },
         {
-          content: message.content,
+          content: message.cleanContent.replace(/@/g, "@<!-- -->"),
           author: message.author.username,
         }
       );

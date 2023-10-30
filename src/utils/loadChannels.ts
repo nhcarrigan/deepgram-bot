@@ -19,6 +19,13 @@ export const loadChannels = async (bot: ExtendedClient) => {
     if (!homeGuild) {
       throw new Error("Could not find home guild.");
     }
+    /**
+     * Fetch everything once on load so that we can parse mentions
+     * in the answer command.
+     */
+    await homeGuild.members.fetch();
+    await homeGuild.channels.fetch();
+    await homeGuild.roles.fetch();
     const helpChannel =
       homeGuild.channels.cache.get(bot.env.helpChannel) ||
       (await homeGuild.channels.fetch(bot.env.helpChannel));
