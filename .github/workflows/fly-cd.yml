@@ -25,10 +25,16 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - name: Run tests
-        run: |
-          npm ci
-          npm run test
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Run Tests
+        run: pnpm run test
 
       - name: Install Fly
         uses: superfly/flyctl-actions/setup-flyctl@ddcac349402ef55840d9870785f4df1890768078 # v1.4
