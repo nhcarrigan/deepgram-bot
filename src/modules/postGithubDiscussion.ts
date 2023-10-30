@@ -46,25 +46,23 @@ export const postGithubDiscussion = async (
       };
     } = await github(`
         {
-            repository(owner: "${owner}", name: "${repo}") {
+          repository(owner: "${owner}", name: "${repo}") {
+            id
+            discussionCategories(first: 10) {
+              nodes {
                 id
-                discussionCategories(first: 10) {
-                  nodes {
-                    id
-                    name
-                  }
-                }
-                labels(first: 50) {
-                  nodes {
-                    id
-                    name
-                  }
-                }
+                name
+              }
+            }
+            labels(first: 50) {
+              nodes {
+                id
+                name
+              }
             }
           }
         }
-      }
-    `);
+      `);
 
     const category = repoQuery.repository.discussionCategories.nodes.find(
       (n) => n.name === "General help"
@@ -84,16 +82,17 @@ export const postGithubDiscussion = async (
       createDiscussion: { discussion: { id: string } };
     } = await github(`
         mutation {
-        createDiscussion(input: 
+          createDiscussion(input: 
             { 
-            repositoryId: "${repoQuery.repository.id}", 
-            categoryId: "${category.id}", 
-            body: "${question}", 
-            title: "${title}"}
-        ) { 
-            discussion { id } 
+              repositoryId: "${repoQuery.repository.id}", 
+              categoryId: "${category.id}", 
+              body: "${question}", 
+              title: "${title}"
             }
-          }
+          ) { 
+              discussion { id } 
+            }
+        }
     `);
 
     const discussionId = discussionQuery.createDiscussion.discussion.id;
@@ -101,14 +100,13 @@ export const postGithubDiscussion = async (
     const commentQuery: { addDiscussionComment: { comment: { id: string } } } =
       await github(`
         mutation {
-            addDiscussionComment(input: {
-                discussionId: "${discussionId}",
-                body: "${answer}"
-            }) {
-                comment {
-                id
-                }
-            }
+          addDiscussionComment(input: {
+              discussionId: "${discussionId}",
+              body: "${answer}"
+          }) {
+              comment {
+              id
+              }
           }
         }
       `);
