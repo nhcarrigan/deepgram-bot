@@ -33,7 +33,7 @@ export const help: Context = {
       await message.delete();
       const response = await makeAiRequest(bot, "response", content);
       const thread = await bot.cache.helpChannel.threads.create({
-        name: `${truncateString(content, 100)}`,
+        name: `${truncateString(content, 90)}`,
         autoArchiveDuration: 1440,
         message: {
           content: `Hey <@!${author.id}>, your question has been moved here!\n\n${content}`,
