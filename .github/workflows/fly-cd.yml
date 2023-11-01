@@ -1,0 +1,29 @@
+name: Deploy to Fly.io
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  cd:
+    name: Continuous deployment
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: ["20"]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout Source Files
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+
+      - name: Install Fly
+        uses: superfly/flyctl-actions/setup-flyctl@ddcac349402ef55840d9870785f4df1890768078 # v1.4
+
+      - name: Deploy to Fly.io
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

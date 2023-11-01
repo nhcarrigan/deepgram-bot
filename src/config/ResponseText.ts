@@ -23,8 +23,8 @@ export enum ResponseText {
   AlreadyAnswered = "This thread has already been marked as answered.",
   AnswerFailed = "This question has been flagged as answered on Discord, but could not be migrated to the discussion channel. Please migrate manually.",
   AnswerSuccess = "This question has been flagged as answered!",
-  MovedThread = "Please make sure to respond in this thread with as much detail about your question as possible. This will help us better provide you support.",
-  CreatedThread = "Thanks for asking your question. Please be sure to reply with as much detail as possible so we can assist you efficiently.",
+  MovedThread = "Please make sure to respond in this thread with as much detail about your question as possible. This will help us better provide you support. Such as:\n- Provide the `request_id` if you've a question about a transcription response.\n- The options you used or the api.deepgram.com URL you sent your request to, including parameters.\n- Any code snippets you can include.\n- Any audio you can include, or if you can't share it here please email it to us at devrel@deepgram.com and provide a link to this thread.",
+  CreatedThread = "Thanks for asking your question. Please be sure to reply with as much detail as possible so we can assist you efficiently. Such as:\n- Provide the `request_id` if you've a question about a transcription response.\n- The options you used or the api.deepgram.com URL you sent your request to, including parameters.\n- Any code snippets you can include.\n- Any audio you can include, or if you can't share it here please email it to us at devrel@deepgram.com and provide a link to this thread.",
 }
 
 /**

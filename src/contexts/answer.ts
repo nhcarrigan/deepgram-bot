@@ -6,7 +6,7 @@ import { errorHandler } from "../utils/errorHandler";
 
 export const answer: Context = {
   data: {
-    name: "answer",
+    name: "Accept answer",
     type: 3,
   },
   run: async (bot, interaction) => {

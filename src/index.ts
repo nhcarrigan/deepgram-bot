@@ -6,6 +6,7 @@ import { threadCreate } from "./events/threadCreate";
 import { ExtendedClient } from "./interfaces/ExtendedClient";
 import { sendStickyMessage } from "./modules/sendStickyMessage";
 import { errorHandler } from "./utils/errorHandler";
+import { healthCheck } from "./utils/healthCheck";
 import { loadChannels } from "./utils/loadChannels";
 import { loadContexts } from "./utils/loadContexts";
 import { logHandler } from "./utils/logHandler";
@@ -26,6 +27,12 @@ import { validateEnv } from "./utils/validateEnv";
       await loadChannels(bot);
       await registerCommands(bot);
       logHandler.log("info", "Bot is ready.");
+
+      setInterval(
+        async () => await healthCheck(bot, "Bot healthy."),
+        1440 * 1000 * 60
+      );
+
       setInterval(
         async () => await sendStickyMessage(bot),
         bot.env.stickyFrequency * 1000 * 60

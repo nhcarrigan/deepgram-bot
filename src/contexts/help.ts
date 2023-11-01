@@ -4,10 +4,11 @@ import { ResponseText } from "../config/ResponseText";
 import { Context } from "../interfaces/Context";
 import { makeAiRequest } from "../modules/makeAiRequest";
 import { errorHandler } from "../utils/errorHandler";
+import { truncateString } from "../utils/truncateString";
 
 export const help: Context = {
   data: {
-    name: "help",
+    name: "Move to help channel",
     type: 3,
   },
   run: async (bot, interaction) => {
@@ -32,7 +33,7 @@ export const help: Context = {
       await message.delete();
       const response = await makeAiRequest(bot, "response", content);
       const thread = await bot.cache.helpChannel.threads.create({
-        name: `Help Requested by ${author.username}`,
+        name: `${truncateString(content, 90)}`,
         autoArchiveDuration: 1440,
         message: {
           content: `Hey <@!${author.id}>, your question has been moved here!\n\n${content}`,

@@ -20,6 +20,7 @@ export const postGithubDiscussion = async (
 ): Promise<boolean> => {
   try {
     const {
+      // GITHUB_LABEL_ID: label,
       GITHUB_TOKEN: token,
       GITHUB_OWNER: owner,
       GITHUB_REPO: repo,
@@ -45,26 +46,26 @@ export const postGithubDiscussion = async (
       };
     } = await github(`
         {
-            repository(owner: "${owner}", name: "${repo}") {
+          repository(owner: "${owner}", name: "${repo}") {
+            id
+            discussionCategories(first: 10) {
+              nodes {
                 id
-                discussionCategories(first: 10) {
-                  nodes {
-                    id
-                    name
-                  }
-                }
-                labels(first: 50) {
-                  nodes {
-                    id
-                    name
-                  }
-                }
+                name
+              }
             }
+            labels(first: 50) {
+              nodes {
+                id
+                name
+              }
+            }
+          }
         }
       `);
 
     const category = repoQuery.repository.discussionCategories.nodes.find(
-      (n) => n.name === "Q&A"
+      (n) => n.name === "General help"
     );
     const label = repoQuery.repository.labels.nodes.find(
       (label) => label.name.toLowerCase() === "discord"
@@ -81,32 +82,34 @@ export const postGithubDiscussion = async (
       createDiscussion: { discussion: { id: string } };
     } = await github(`
         mutation {
-        createDiscussion(input: 
+          createDiscussion(input: 
             { 
-            repositoryId: "${repoQuery.repository.id}", 
-            categoryId: "${category.id}", 
-            body: "${question}", 
-            title: "${title}"}
-        ) { 
-            discussion { id } 
+              repositoryId: "${repoQuery.repository.id}", 
+              categoryId: "${category.id}", 
+              body: "${question}", 
+              title: "${title}"
             }
-        }`);
+          ) { 
+              discussion { id } 
+            }
+        }
+    `);
 
     const discussionId = discussionQuery.createDiscussion.discussion.id;
 
     const commentQuery: { addDiscussionComment: { comment: { id: string } } } =
       await github(`
         mutation {
-            addDiscussionComment(input: {
-                discussionId: "${discussionId}",
-                body: "${answer}"
-            }) {
-                comment {
-                id
-                }
-            }
+          addDiscussionComment(input: {
+              discussionId: "${discussionId}",
+              body: "${answer}"
+          }) {
+              comment {
+              id
+              }
+          }
         }
-        `);
+      `);
 
     const commentId = commentQuery.addDiscussionComment.comment.id;
 
@@ -117,9 +120,9 @@ export const postGithubDiscussion = async (
           markDiscussionCommentAsAnswer(input: {
               id: "${commentId}"
           }) {
-              discussion {
-                  isAnswered
-              }
+            discussion {
+              isAnswered
+            }
           }
         }
       `);

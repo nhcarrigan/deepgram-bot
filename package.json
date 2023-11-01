@@ -7,7 +7,8 @@
     "build": "tsc",
     "lint": "eslint src test --max-warnings 0 && prettier src test --check",
     "start": "node -r dotenv/config prod/index.js",
-    "test": "ts-mocha -u tdd  test/**/*.spec.ts --recursive --exit --timeout 10000"
+    "test": "ts-mocha -u tdd  test/**/*.spec.ts --recursive --exit --timeout 10000",
+    "fly-secrets": "fly secrets set $(cat .env | xargs)"
   },
   "repository": {
     "type": "git",
@@ -38,6 +39,7 @@
     "winston": "3.11.0"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.4.0",
     "@nhcarrigan/eslint-config": "1.1.3",
     "@nhcarrigan/prettier-config": "1.0.1",
     "@nhcarrigan/typescript-config": "1.0.1",
