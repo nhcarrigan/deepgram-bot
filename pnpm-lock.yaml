@@ -41,8 +41,8 @@ devDependencies:
     specifier: 10.0.6
     version: 10.0.6
   '@types/node':
-    specifier: 18.19.0
-    version: 18.19.0
+    specifier: 18.19.1
+    version: 18.19.1
   '@types/node-fetch':
     specifier: '2'
     version: 2.6.4
@@ -385,12 +385,12 @@ packages:
   /@types/node-fetch@2.6.4:
     resolution: {integrity: sha512-1ZX9fcN4Rvkvgv4E6PAY5WXUFWFcRWxZa3EW83UjycOB9ljJCedb2CupIP4RZMEwF/M3eTcCihbBRgwtGbg5Rg==}
     dependencies:
-      '@types/node': 18.19.0
+      '@types/node': 18.19.1
       form-data: 3.0.1
     dev: true
 
-  /@types/node@18.19.0:
-    resolution: {integrity: sha512-667KNhaD7U29mT5wf+TZUnrzPrlL2GNQ5N0BMjO2oNULhBxX0/FKCkm6JMu0Jh7Z+1LwUlR21ekd7KhIboNFNw==}
+  /@types/node@18.19.1:
+    resolution: {integrity: sha512-mZJ9V11gG5Vp0Ox2oERpeFDl+JvCwK24PGy76vVY/UgBtjwJWc5rYBThFxmbnYOm9UPZNm6wEl/sxHt2SU7x9A==}
     dependencies:
       undici-types: 5.26.5
 
@@ -405,7 +405,7 @@ packages:
   /@types/ws@8.5.9:
     resolution: {integrity: sha512-jbdrY0a8lxfdTp/+r7Z4CkycbOFN8WX+IOchLJr3juT/xzbJ8URyTVSJ/hvNdadTgM1mnedb47n+Y31GsFnQlg==}
     dependencies:
-      '@types/node': 18.19.0
+      '@types/node': 18.19.1
     dev: false
 
   /@typescript-eslint/eslint-plugin@5.59.5(@typescript-eslint/parser@5.59.5)(eslint@8.54.0)(typescript@5.3.2):
