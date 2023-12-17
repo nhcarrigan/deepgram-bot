@@ -12,6 +12,8 @@ import { loadContexts } from "./utils/loadContexts";
 import { logHandler } from "./utils/logHandler";
 import { registerCommands } from "./utils/registerCommands";
 import { validateEnv } from "./utils/validateEnv";
+import { scheduleJob } from "node-schedule";
+import { aggregateDailyUnansweredThreads } from "./modules/threads/aggregateDailyUnansweredThreads";
 
 (async () => {
   try {
@@ -37,6 +39,10 @@ import { validateEnv } from "./utils/validateEnv";
         async () => await sendStickyMessage(bot),
         bot.env.stickyFrequency * 1000 * 60
       );
+
+      scheduleJob("0 9 * * *", async () => {
+        await aggregateDailyUnansweredThreads(bot);
+      });
     });
 
     bot.on(Events.ThreadCreate, async (thread) => {

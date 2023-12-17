@@ -36,6 +36,7 @@
     "discord.js": "14.14.1",
     "dotenv": "16.3.1",
     "node-fetch": "2",
+    "node-schedule": "2.1.1",
     "winston": "3.11.0"
   },
   "devDependencies": {
@@ -47,6 +48,7 @@
     "@types/mocha": "10.0.6",
     "@types/node": "18.19.3",
     "@types/node-fetch": "2",
+    "@types/node-schedule": "2.1.5",
     "chai": "4.3.10",
     "eslint": "8.56.0",
     "mocha": "10.2.0",
