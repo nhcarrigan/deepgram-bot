@@ -14,6 +14,7 @@ import { registerCommands } from "./utils/registerCommands";
 import { validateEnv } from "./utils/validateEnv";
 import { scheduleJob } from "node-schedule";
 import { aggregateDailyUnansweredThreads } from "./modules/threads/aggregateDailyUnansweredThreads";
+import { aggregateUnansweredThreads } from "./modules/threads/aggregateUnansweredThreads";
 
 (async () => {
   try {
@@ -42,6 +43,10 @@ import { aggregateDailyUnansweredThreads } from "./modules/threads/aggregateDail
 
       scheduleJob("0 9 * * *", async () => {
         await aggregateDailyUnansweredThreads(bot);
+      });
+
+      scheduleJob("0 10 * * *", async () => {
+        await aggregateUnansweredThreads(bot);
       });
     });
 

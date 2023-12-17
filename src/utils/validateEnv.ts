@@ -27,12 +27,18 @@ export const validateEnv = (): ExtendedClient["env"] => {
   if (!process.env.GENERAL_CHANNEL_ID) {
     throw new Error("Missing GENERAL_CHANNEL_ID environment variable");
   }
+  if (!process.env.MOD_CHANNEL_ID) {
+    throw new Error("Missing MOD_CHANNEL_ID environment variable");
+  }
   if (!process.env.STICKY_MESSAGE_FREQUENCY) {
     throw new Error("Missing STICKY_MESSAGE_FREQUENCY environment variable");
   }
   const stickyFrequency = parseInt(process.env.STICKY_MESSAGE_FREQUENCY, 10);
   if (!stickyFrequency) {
     throw new Error("Could not parse sticky message frequency into number");
+  }
+  if (stickyFrequency * 1000 * 60 > Number.MAX_SAFE_INTEGER) {
+    throw new Error("Sticky frequency is too long.");
   }
   if (!process.env.DEBUG_HOOK) {
     throw new Error("Missing DEBUG_HOOK environment variable");
@@ -43,6 +49,7 @@ export const validateEnv = (): ExtendedClient["env"] => {
     helperRoles,
     helpChannel: process.env.HELP_CHANNEL_ID,
     generalChannel: process.env.GENERAL_CHANNEL_ID,
+    modChannel: process.env.MOD_CHANNEL_ID,
     stickyFrequency,
     debugHook: new WebhookClient({
       url: process.env.DEBUG_HOOK,

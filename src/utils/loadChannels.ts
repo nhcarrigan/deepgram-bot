@@ -57,11 +57,22 @@ export const loadChannels = async (bot: ExtendedClient) => {
     if (!("send" in generalChannel)) {
       throw new Error("General channel is not a text channel.");
     }
+
+    const modChannel =
+      homeGuild.channels.cache.get(bot.env.modChannel) ||
+      (await homeGuild.channels.fetch(bot.env.modChannel));
+    if (!modChannel) {
+      throw new Error("Could not find mod channel.");
+    }
+    if (!("send" in modChannel)) {
+      throw new Error("Mod channel is not a text channel.");
+    }
     if (!bot.cache) {
       bot.cache = {
         homeGuild,
         helpChannel,
         generalChannel,
+        modChannel,
         questionTag: questionTag.id,
         answerTag: answerTag.id,
         lastSticky: "",

@@ -15,6 +15,7 @@ export interface ExtendedClient extends Client {
     helperRoles: string[];
     helpChannel: string;
     generalChannel: string;
+    modChannel: string;
     stickyFrequency: number;
     debugHook: WebhookClient;
   };
@@ -22,6 +23,7 @@ export interface ExtendedClient extends Client {
     homeGuild: Guild;
     helpChannel: ForumChannel;
     generalChannel: GuildTextBasedChannel;
+    modChannel: GuildTextBasedChannel;
     questionTag: string;
     answerTag: string;
     lastSticky: string;
