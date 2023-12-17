@@ -15,6 +15,7 @@ import { validateEnv } from "./utils/validateEnv";
 import { scheduleJob } from "node-schedule";
 import { aggregateDailyUnansweredThreads } from "./modules/threads/aggregateDailyUnansweredThreads";
 import { aggregateUnansweredThreads } from "./modules/threads/aggregateUnansweredThreads";
+import { aggregateWeeklyThreads } from "./modules/threads/aggregateWeeklyThreads";
 
 (async () => {
   try {
@@ -48,12 +49,15 @@ import { aggregateUnansweredThreads } from "./modules/threads/aggregateUnanswere
       scheduleJob("0 10 * * *", async () => {
         await aggregateUnansweredThreads(bot);
       });
+
+      scheduleJob("0 7 * * 1", async () => {
+        await aggregateWeeklyThreads(bot);
+      });
     });
 
     bot.on(Events.ThreadCreate, async (thread) => {
       await threadCreate(bot, thread);
     });
-
     await bot.login(bot.env.token);
   } catch (err) {
     const bot = new Client({ intents: IntentOptions }) as ExtendedClient;
