@@ -32,8 +32,13 @@ suite("validateEnv utility", () => {
     );
   });
 
-  test("throws an error when missing STICKY_MESSAGE_FREQUENCY", () => {
+  test("throws an error when missing MOD_CHANNEL_ID", () => {
     process.env.GENERAL_CHANNEL_ID = "123";
+    assert.throws(validateEnv, "Missing MOD_CHANNEL_ID environment variable");
+  });
+
+  test("throws an error when missing STICKY_MESSAGE_FREQUENCY", () => {
+    process.env.MOD_CHANNEL_ID = "123";
     assert.throws(
       validateEnv,
       "Missing STICKY_MESSAGE_FREQUENCY environment variable"
@@ -73,6 +78,7 @@ suite("validateEnv utility", () => {
     delete process.env.HELPER_ROLE_IDS;
     delete process.env.HELP_CHANNEL_ID;
     delete process.env.GENERAL_CHANNEL_ID;
+    delete process.env.MOD_CHANNEL_ID;
     delete process.env.STICKY_MESSAGE_FREQUENCY;
     delete process.env.DEBUG_HOOK;
   });

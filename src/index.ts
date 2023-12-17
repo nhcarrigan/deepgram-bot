@@ -1,10 +1,14 @@
 import { Client, Events } from "discord.js";
+import { scheduleJob } from "node-schedule";
 
 import { IntentOptions } from "./config/IntentOptions";
 import { interactionCreate } from "./events/interactionCreate";
 import { threadCreate } from "./events/threadCreate";
 import { ExtendedClient } from "./interfaces/ExtendedClient";
 import { sendStickyMessage } from "./modules/sendStickyMessage";
+import { aggregateDailyUnansweredThreads } from "./modules/threads/aggregateDailyUnansweredThreads";
+import { aggregateUnansweredThreads } from "./modules/threads/aggregateUnansweredThreads";
+import { aggregateWeeklyThreads } from "./modules/threads/aggregateWeeklyThreads";
 import { errorHandler } from "./utils/errorHandler";
 import { healthCheck } from "./utils/healthCheck";
 import { loadChannels } from "./utils/loadChannels";
@@ -12,10 +16,6 @@ import { loadContexts } from "./utils/loadContexts";
 import { logHandler } from "./utils/logHandler";
 import { registerCommands } from "./utils/registerCommands";
 import { validateEnv } from "./utils/validateEnv";
-import { scheduleJob } from "node-schedule";
-import { aggregateDailyUnansweredThreads } from "./modules/threads/aggregateDailyUnansweredThreads";
-import { aggregateUnansweredThreads } from "./modules/threads/aggregateUnansweredThreads";
-import { aggregateWeeklyThreads } from "./modules/threads/aggregateWeeklyThreads";
 
 (async () => {
   try {
