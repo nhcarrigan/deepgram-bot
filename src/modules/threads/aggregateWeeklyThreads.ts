@@ -2,8 +2,8 @@ import { ExtendedClient } from "../../interfaces/ExtendedClient";
 import { errorHandler } from "../../utils/errorHandler";
 
 /**
- * Fetches the threads from the help channel, finds the three most recent threads without
- * the answered tag, posts a summary to the general channel.
+ * Fetches the threads from the help channel, finds answered threads within the last week,
+ * posts a list in the mod channel.
  *
  * @param {ExtendedClient} bot The bot's Discord instance.
  */
