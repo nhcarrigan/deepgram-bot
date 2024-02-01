@@ -46,7 +46,7 @@
     "@nhcarrigan/typescript-config": "1.0.1",
     "@types/chai": "4.3.11",
     "@types/mocha": "10.0.6",
-    "@types/node": "18.19.12",
+    "@types/node": "18.19.13",
     "@types/node-fetch": "2",
     "@types/node-schedule": "2.1.5",
     "chai": "4.4.1",
