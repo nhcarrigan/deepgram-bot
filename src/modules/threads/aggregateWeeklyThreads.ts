@@ -37,15 +37,23 @@ export const aggregateWeeklyThreads = async (bot: ExtendedClient) => {
       oldest = answered.slice(-1)[0];
     }
 
+    const filtered = answered
+      .filter(
+        (t) => (t.createdTimestamp ?? 0) >= Date.now() - 1000 * 60 * 60 * 24 * 7
+      )
+      .map((t) => `- [${t.name}](<${t.url}>)`);
+
     await bot.cache.modChannel.send({
-      content: `Here's a recap of the threads that have been answered this week.\n${answered
-        .filter(
-          (t) =>
-            (t.createdTimestamp ?? 0) >= Date.now() - 1000 * 60 * 60 * 24 * 7
-        )
-        .map((t) => `- [${t.name}](<${t.url}>)`)
+      content: `Here's a recap of the threads that have been answered this week.\n${filtered
+        .splice(0, 5)
         .join("\n")}`,
     });
+
+    while (filtered.length > 0) {
+      await bot.cache.modChannel.send({
+        content: filtered.splice(0, 5).join("\n"),
+      });
+    }
   } catch (err) {
     await errorHandler(bot, "aggregate daily unanswered threads", err);
   }

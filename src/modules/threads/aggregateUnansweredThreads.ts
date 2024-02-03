@@ -18,14 +18,20 @@ export const aggregateUnansweredThreads = async (bot: ExtendedClient) => {
     );
     const mapped = unanswered
       .map((e) => e)
-      .sort((a, b) => (a.createdTimestamp ?? 0) - (b.createdTimestamp ?? 0));
+      .sort((a, b) => (a.createdTimestamp ?? 0) - (b.createdTimestamp ?? 0))
+      .map((t) => `- [${t.name}](<${t.url}>)`);
 
     await bot.cache.modChannel.send({
       content: `Please take a look at these threads which are waiting for an answer.\n${mapped
-        .map((t) => `- [${t.name}](<${t.url}>)`)
+        .splice(0, 5)
         .join("\n")}`,
     });
+    while (mapped.length > 0) {
+      await bot.cache.modChannel.send({
+        content: mapped.splice(0, 5).join("\n"),
+      });
+    }
   } catch (err) {
-    await errorHandler(bot, "aggregate daily unanswered threads", err);
+    await errorHandler(bot, "aggregate all unanswered threads", err);
   }
 };
