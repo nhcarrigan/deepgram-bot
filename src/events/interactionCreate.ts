@@ -18,6 +18,18 @@ export const interactionCreate = async (
   interaction: Interaction
 ) => {
   try {
+    if (interaction.isChatInputCommand()) {
+      const target = bot.commands.find(
+        (c) => c.data.name === interaction.commandName
+      );
+      if (!target) {
+        await interaction.editReply({
+          content: ResponseText.NoCommand,
+        });
+        return;
+      }
+      await target.run(bot, interaction);
+    }
     if (interaction.isContextMenuCommand()) {
       await interaction.deferReply({ ephemeral: true });
       if (!isGuildContextCommand(interaction)) {
