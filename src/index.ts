@@ -9,6 +9,7 @@ import { sendStickyMessage } from "./modules/sendStickyMessage";
 import { aggregateDailyUnansweredThreads } from "./modules/threads/aggregateDailyUnansweredThreads";
 import { aggregateUnansweredThreads } from "./modules/threads/aggregateUnansweredThreads";
 import { aggregateWeeklyThreads } from "./modules/threads/aggregateWeeklyThreads";
+import { autorespondToThreads } from "./modules/threads/autorespondToThreads";
 import { errorHandler } from "./utils/errorHandler";
 import { healthCheck } from "./utils/healthCheck";
 import { loadChannels } from "./utils/loadChannels";
@@ -41,6 +42,10 @@ import { validateEnv } from "./utils/validateEnv";
         async () => await sendStickyMessage(bot),
         bot.env.stickyFrequency * 1000 * 60
       );
+
+      scheduleJob("0 8 * * *", async () => {
+        await autorespondToThreads(bot);
+      });
 
       scheduleJob("0 9 * * *", async () => {
         await aggregateDailyUnansweredThreads(bot);

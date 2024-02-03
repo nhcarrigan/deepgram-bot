@@ -41,11 +41,17 @@ export const loadChannels = async (bot: ExtendedClient) => {
     const answerTag = helpChannel.availableTags.find(
       (t) => t.name === "Answered"
     );
+    const inactiveTag = helpChannel.availableTags.find(
+      (t) => t.name === "Inactive"
+    );
     if (!questionTag) {
       throw new Error("Could not find `Question` tag.");
     }
     if (!answerTag) {
       throw new Error("Could not find `Answer` tag.");
+    }
+    if (!inactiveTag) {
+      throw new Error("Could not find `Inactive` tag.");
     }
 
     const generalChannel =
@@ -75,6 +81,7 @@ export const loadChannels = async (bot: ExtendedClient) => {
         modChannel,
         questionTag: questionTag.id,
         answerTag: answerTag.id,
+        inactiveTag: inactiveTag.id,
         lastSticky: "",
       };
     }

@@ -55,6 +55,6 @@ export const aggregateWeeklyThreads = async (bot: ExtendedClient) => {
       });
     }
   } catch (err) {
-    await errorHandler(bot, "aggregate daily unanswered threads", err);
+    await errorHandler(bot, "aggregate weekly unanswered threads", err);
   }
 };

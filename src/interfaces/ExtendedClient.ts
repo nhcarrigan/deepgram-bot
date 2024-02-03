@@ -26,6 +26,7 @@ export interface ExtendedClient extends Client {
     modChannel: GuildTextBasedChannel;
     questionTag: string;
     answerTag: string;
+    inactiveTag: string;
     lastSticky: string;
   };
   contexts: Context[];
