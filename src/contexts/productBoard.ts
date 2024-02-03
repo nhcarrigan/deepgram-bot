@@ -9,7 +9,6 @@ export const productBoard: Context = {
   },
   run: async (bot, interaction) => {
     try {
-      await interaction.deferReply({ ephemeral: true });
       if (!process.env.PRODUCT_BOARD_API_KEY) {
         await interaction.editReply({
           content: "Product Board API is not configured.",
@@ -41,6 +40,7 @@ export const productBoard: Context = {
           accept: "application/json; charset=utf-8",
           "content-type": "application/json",
         },
+        method: "POST",
         body: JSON.stringify({
           title: `${author.username}'s Feedback`,
           content,
