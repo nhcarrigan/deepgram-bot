@@ -6,6 +6,7 @@ import {
   WebhookClient,
 } from "discord.js";
 
+import { Command } from "./Command";
 import { Context } from "./Context";
 
 export interface ExtendedClient extends Client {
@@ -30,4 +31,5 @@ export interface ExtendedClient extends Client {
     lastSticky: string;
   };
   contexts: Context[];
+  commands: Command[];
 }

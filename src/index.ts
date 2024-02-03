@@ -13,6 +13,7 @@ import { autorespondToThreads } from "./modules/threads/autorespondToThreads";
 import { errorHandler } from "./utils/errorHandler";
 import { healthCheck } from "./utils/healthCheck";
 import { loadChannels } from "./utils/loadChannels";
+import { loadCommands } from "./utils/loadCommands";
 import { loadContexts } from "./utils/loadContexts";
 import { logHandler } from "./utils/logHandler";
 import { registerCommands } from "./utils/registerCommands";
@@ -22,6 +23,7 @@ import { validateEnv } from "./utils/validateEnv";
   try {
     const bot = new Client({ intents: IntentOptions }) as ExtendedClient;
     bot.env = validateEnv();
+    await loadCommands(bot);
     await loadContexts(bot);
 
     bot.on(Events.InteractionCreate, async (interaction) => {

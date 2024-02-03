@@ -15,11 +15,12 @@ export const registerCommands = async (bot: ExtendedClient) => {
       throw new Error("Bot is not logged in. Cannot register commands yet.");
     }
     const rest = new REST({ version: "10" }).setToken(bot.env.token);
+    const commands = bot.commands.map((command) => command.data.toJSON());
     const contexts = bot.contexts.map((context) => context.data);
 
     await rest.put(
       Routes.applicationGuildCommands(bot.user.id, bot.env.homeGuild),
-      { body: contexts }
+      { body: [...commands, ...contexts] }
     );
   } catch (err) {
     await errorHandler(bot, "register commands utility", err);
