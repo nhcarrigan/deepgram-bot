@@ -4,6 +4,7 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 
+import { ResponseText } from "../config/ResponseText";
 import { Command } from "../interfaces/Command";
 import { errorHandler } from "../utils/errorHandler";
 
@@ -14,7 +15,7 @@ export const stats: Command = {
     .setDMPermission(false),
   run: async (bot, interaction) => {
     try {
-      await interaction.deferReply();
+      await interaction.deferReply({ ephemeral: true });
 
       const { member } = interaction;
       if (
@@ -24,7 +25,7 @@ export const stats: Command = {
           !member.permissions.has(PermissionFlagsBits.Administrator))
       ) {
         await interaction.editReply({
-          content: "You do not have permission to use this.",
+          content: ResponseText.MustBeHelper,
         });
         return;
       }

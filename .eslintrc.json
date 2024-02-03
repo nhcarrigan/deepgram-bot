@@ -11,6 +11,17 @@
       "rules": {
         "require-await": "off"
       }
+    },
+    {
+      "files": "src/contexts/productBoard.ts",
+      "rules": {
+        "camelcase": [
+          "error",
+          {
+            "allow": ["display_url"]
+          }
+        ]
+      }
     }
   ]
 }
