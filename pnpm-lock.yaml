@@ -50,8 +50,8 @@ devDependencies:
     specifier: '2'
     version: 2.6.4
   '@types/node-schedule':
-    specifier: 2.1.5
-    version: 2.1.5
+    specifier: 2.1.6
+    version: 2.1.6
   chai:
     specifier: 4.4.1
     version: 4.4.1
@@ -395,8 +395,8 @@ packages:
       form-data: 3.0.1
     dev: true
 
-  /@types/node-schedule@2.1.5:
-    resolution: {integrity: sha512-bN0MiplDBUxNMmlEi4iykjLYD7+Ze3DEevzliCn8WYuDwYSPj/5XFh8wZw+YXPLpLxiNWlIONYiQ67g/vowSMA==}
+  /@types/node-schedule@2.1.6:
+    resolution: {integrity: sha512-6AlZSUiNTdaVmH5jXYxX9YgmF1zfOlbjUqw0EllTBmZCnN1R5RR/m/u3No1OiWR05bnQ4jM4/+w4FcGvkAtnKQ==}
     dependencies:
       '@types/node': 18.19.14
     dev: true

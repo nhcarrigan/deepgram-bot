@@ -48,7 +48,7 @@
     "@types/mocha": "10.0.6",
     "@types/node": "18.19.14",
     "@types/node-fetch": "2",
-    "@types/node-schedule": "2.1.5",
+    "@types/node-schedule": "2.1.6",
     "chai": "4.4.1",
     "eslint": "8.56.0",
     "mocha": "10.2.0",
