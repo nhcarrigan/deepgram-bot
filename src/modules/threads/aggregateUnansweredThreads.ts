@@ -1,5 +1,6 @@
 import { ExtendedClient } from "../../interfaces/ExtendedClient";
 import { errorHandler } from "../../utils/errorHandler";
+import { stripLinks } from "../../utils/stripLinks";
 
 /**
  * Fetches the threads from the help channel, finds unanswered threads, posts a list
@@ -19,7 +20,7 @@ export const aggregateUnansweredThreads = async (bot: ExtendedClient) => {
     const mapped = unanswered
       .map((e) => e)
       .sort((a, b) => (a.createdTimestamp ?? 0) - (b.createdTimestamp ?? 0))
-      .map((t) => `- [${t.name}](<${t.url}>)`);
+      .map((t) => `- [${stripLinks(t.name)}](<${t.url}>)`);
 
     await bot.cache.modChannel.send({
       content: `Please take a look at these threads which are waiting for an answer.\n${mapped

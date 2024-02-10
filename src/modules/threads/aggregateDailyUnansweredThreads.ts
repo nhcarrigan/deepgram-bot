@@ -1,5 +1,6 @@
 import { ExtendedClient } from "../../interfaces/ExtendedClient";
 import { errorHandler } from "../../utils/errorHandler";
+import { stripLinks } from "../../utils/stripLinks";
 
 /**
  * Fetches the threads from the help channel, finds the three most recent threads without
@@ -20,7 +21,7 @@ export const aggregateDailyUnansweredThreads = async (bot: ExtendedClient) => {
 
     await bot.cache.generalChannel.send({
       content: `Heya! It looks like some of your fellow community members might need some assistance.\n${firstThree
-        .map((t) => `- [${t.name}](<${t.url}>)`)
+        .map((t) => `- [${stripLinks(t.name)}](<${t.url}>)`)
         .join("\n")}`,
     });
   } catch (err) {

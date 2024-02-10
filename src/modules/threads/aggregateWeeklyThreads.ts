@@ -1,5 +1,6 @@
 import { ExtendedClient } from "../../interfaces/ExtendedClient";
 import { errorHandler } from "../../utils/errorHandler";
+import { stripLinks } from "../../utils/stripLinks";
 
 /**
  * Fetches the threads from the help channel, finds answered threads within the last week,
@@ -41,7 +42,7 @@ export const aggregateWeeklyThreads = async (bot: ExtendedClient) => {
       .filter(
         (t) => (t.createdTimestamp ?? 0) >= Date.now() - 1000 * 60 * 60 * 24 * 7
       )
-      .map((t) => `- [${t.name}](<${t.url}>)`);
+      .map((t) => `- [${stripLinks(t.name)}](<${t.url}>)`);
 
     await bot.cache.modChannel.send({
       content: `Here's a recap of the threads that have been answered this week.\n${filtered
