@@ -10,6 +10,15 @@ import { stripLinks } from "../../utils/stripLinks";
  */
 export const aggregateDailyUnansweredThreads = async (bot: ExtendedClient) => {
   try {
+    const lastMessage = (
+      await bot.cache.generalChannel.messages.fetch({
+        limit: 1,
+      })
+    ).first();
+
+    if (lastMessage?.author.id === bot.user?.id) {
+      return;
+    }
     const threads = (await bot.cache.helpChannel.threads.fetchActive()).threads;
     const unanswered = threads.filter(
       (thread) => !thread.appliedTags.includes(bot.cache.answerTag)
