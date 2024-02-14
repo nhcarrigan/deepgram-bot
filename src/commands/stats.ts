@@ -30,7 +30,9 @@ export const stats: Command = {
         return;
       }
 
-      let rawArchived = await bot.cache.helpChannel.threads.fetchArchived();
+      const rawArchived = await bot.cache.helpChannel.threads.fetchArchived({
+        fetchAll: true,
+      });
       const archived = rawArchived.threads;
       const active = (await bot.cache.helpChannel.threads.fetchActive())
         .threads;
@@ -38,18 +40,6 @@ export const stats: Command = {
       const sorted = threads
         .map((e) => e)
         .sort((a, b) => (b.createdTimestamp ?? 0) - (a.createdTimestamp ?? 0));
-      let oldest = sorted.slice(-1)[0];
-
-      while (rawArchived.hasMore) {
-        rawArchived = await bot.cache.helpChannel.threads.fetchArchived({
-          before: oldest.id,
-        });
-        sorted.push(...rawArchived.threads.map((e) => e));
-        sorted.sort(
-          (a, b) => (b.createdTimestamp ?? 0) - (a.createdTimestamp ?? 0)
-        );
-        oldest = sorted.slice(-1)[0];
-      }
 
       const total = sorted.length;
       const answeredArray = sorted.filter((thread) =>

@@ -9,33 +9,15 @@ import { errorHandler } from "../../utils/errorHandler";
  */
 export const autorespondToThreads = async (bot: ExtendedClient) => {
   try {
-    const archived = (await bot.cache.helpChannel.threads.fetchArchived())
-      .threads;
+    const archived = (
+      await bot.cache.helpChannel.threads.fetchArchived({ fetchAll: true })
+    ).threads;
     const active = (await bot.cache.helpChannel.threads.fetchActive()).threads;
     const threads = [...archived.map((e) => e), ...active.map((e) => e)];
     const unanswered = threads
       .filter((thread) => !thread.appliedTags.includes(bot.cache.answerTag))
       .map((e) => e)
       .sort((a, b) => (b.createdTimestamp ?? 0) - (a.createdTimestamp ?? 0));
-    let oldest = unanswered.slice(-1)[0];
-
-    while (
-      oldest.createdTimestamp &&
-      oldest.createdTimestamp > Date.now() - 1000 * 60 * 60 * 24 * 30
-    ) {
-      const archived = (
-        await bot.cache.helpChannel.threads.fetchArchived({ before: oldest.id })
-      ).threads;
-      unanswered.push(
-        ...archived
-          .map((e) => e)
-          .filter((thread) => thread.appliedTags.includes(bot.cache.answerTag))
-      );
-      unanswered.sort(
-        (a, b) => (b.createdTimestamp ?? 0) - (a.createdTimestamp ?? 0)
-      );
-      oldest = unanswered.slice(-1)[0];
-    }
 
     for (const thread of unanswered) {
       const lastMessage = (await thread.messages.fetch({ limit: 1 })).first();

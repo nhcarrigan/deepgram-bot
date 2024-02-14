@@ -10,12 +10,15 @@ import { stripLinks } from "../../utils/stripLinks";
  */
 export const aggregateUnansweredThreads = async (bot: ExtendedClient) => {
   try {
-    const archived = (await bot.cache.helpChannel.threads.fetchArchived())
-      .threads;
+    const archived = (
+      await bot.cache.helpChannel.threads.fetchArchived({ fetchAll: true })
+    ).threads;
     const active = (await bot.cache.helpChannel.threads.fetchActive()).threads;
     const threads = [...archived.map((e) => e), ...active.map((e) => e)];
     const unanswered = threads.filter(
-      (thread) => !thread.appliedTags.includes(bot.cache.answerTag)
+      (thread) =>
+        !thread.appliedTags.includes(bot.cache.answerTag) &&
+        !thread.appliedTags.includes(bot.cache.inactiveTag)
     );
     const mapped = unanswered
       .map((e) => e)

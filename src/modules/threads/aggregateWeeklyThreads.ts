@@ -10,33 +10,15 @@ import { stripLinks } from "../../utils/stripLinks";
  */
 export const aggregateWeeklyThreads = async (bot: ExtendedClient) => {
   try {
-    const archived = (await bot.cache.helpChannel.threads.fetchArchived())
-      .threads;
+    const archived = (
+      await bot.cache.helpChannel.threads.fetchArchived({ fetchAll: true })
+    ).threads;
     const active = (await bot.cache.helpChannel.threads.fetchActive()).threads;
     const threads = [...archived.map((e) => e), ...active.map((e) => e)];
     const answered = threads
       .filter((thread) => thread.appliedTags.includes(bot.cache.answerTag))
       .map((e) => e)
       .sort((a, b) => (b.createdTimestamp ?? 0) - (a.createdTimestamp ?? 0));
-    let oldest = answered.slice(-1)[0];
-
-    while (
-      oldest.createdTimestamp &&
-      oldest.createdTimestamp > Date.now() - 1000 * 60 * 60 * 24 * 7
-    ) {
-      const archived = (
-        await bot.cache.helpChannel.threads.fetchArchived({ before: oldest.id })
-      ).threads;
-      answered.push(
-        ...archived
-          .map((e) => e)
-          .filter((thread) => thread.appliedTags.includes(bot.cache.answerTag))
-      );
-      answered.sort(
-        (a, b) => (b.createdTimestamp ?? 0) - (a.createdTimestamp ?? 0)
-      );
-      oldest = answered.slice(-1)[0];
-    }
 
     const filtered = answered
       .filter(

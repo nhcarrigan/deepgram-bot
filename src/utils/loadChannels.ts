@@ -3,6 +3,7 @@ import { ChannelType } from "discord.js";
 import { ExtendedClient } from "../interfaces/ExtendedClient";
 
 import { errorHandler } from "./errorHandler";
+import { logHandler } from "./logHandler";
 
 /**
  * Loads the guild and channel IDs from the environment, fetches
@@ -85,6 +86,20 @@ export const loadChannels = async (bot: ExtendedClient) => {
         lastSticky: "",
       };
     }
+
+    logHandler.debug("Loading help threads to cache.");
+
+    const rawArchived = await bot.cache.helpChannel.threads.fetchArchived({
+      fetchAll: true,
+    });
+    const archived = rawArchived.threads;
+    const active = (await bot.cache.helpChannel.threads.fetchActive()).threads;
+    const threads = [...archived.map((e) => e), ...active.map((e) => e)];
+    const sorted = threads
+      .map((e) => e)
+      .sort((a, b) => (b.createdTimestamp ?? 0) - (a.createdTimestamp ?? 0));
+
+    logHandler.debug(`Loaded ${sorted.length} threads.`);
   } catch (err) {
     await errorHandler(bot, "load channels utility", err);
     // shut down because the cache is essential.
