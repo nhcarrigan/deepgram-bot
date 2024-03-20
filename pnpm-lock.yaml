@@ -38,8 +38,8 @@ devDependencies:
     specifier: 1.0.1
     version: 1.0.1(typescript@5.4.2)
   '@types/chai':
-    specifier: 4.3.13
-    version: 4.3.13
+    specifier: 4.3.14
+    version: 4.3.14
   '@types/mocha':
     specifier: 10.0.6
     version: 10.0.6
@@ -371,8 +371,8 @@ packages:
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dev: false
 
-  /@types/chai@4.3.13:
-    resolution: {integrity: sha512-+LxQEbg4BDUf88utmhpUpTyYn1zHao443aGnXIAQak9ZMt9Rtsic0Oig0OS1xyIqdDXc5uMekoC6NaiUlkT/qA==}
+  /@types/chai@4.3.14:
+    resolution: {integrity: sha512-Wj71sXE4Q4AkGdG9Tvq1u/fquNz9EdG4LIJMwVVII7ashjD/8cf8fyIfJAjRr6YcsXnSE8cOGQPq1gqeR8z+3w==}
     dev: true
 
   /@types/json-schema@7.0.12:
